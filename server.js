@@ -1,26 +1,26 @@
-// server.js
-const jsonServer = require('json-server')
-const router = jsonServer.router('db.json')
-const basicAuth = require('express-basic-auth')
+var http = require('http');
+var fs = require('fs');
+for(var i =201;i <  503;i++){
+	if (i==404) continue
+	console.log(i);
+}
 
-const server = jsonServer.create()
-const middlewares = jsonServer.defaults()
-const port = process.env.PORT || 3000;
- 
-// server.use(basicAuth({
-//     users: { 'admin': 'secret' },
-//     challenge: true,
-//     unauthorizedResponse: getUnauthorizedResponse,
-// }))
+function send404Response(response){
+	response.writeHead(404,{'Content-Type': 'text/plain'});
+	response.write("error 404");
+	response.end();
+}
 
-// function getUnauthorizedResponse(req) {
-//     return req.auth ?
-//         {'Unauthorized':('Credentials ' + req.auth.user + ':' + req.auth.password + ' rejected')} : 
-//         {'Unauthorized':'No credentials provided'}
-// }
+function onRequest(request,response){
 
-server.use(middlewares)
-server.use(router)
-server.listen(port, () => {
-  console.log('json-server is running on port ' + port + '!')
-})
+	if (request.method == "GET" && request.url == "/"){
+		response.writeHead(i,{'Content-Type': 'text/html'});
+		//response.writeHead(200,{'Content-Type': 'text/html'});
+		
+		fs.createReadStream("./shedevx.html").pipe(response);
+	}else{
+		send404Response(response);
+	}
+
+}
+http.createServer(onRequest).listen(3000);
